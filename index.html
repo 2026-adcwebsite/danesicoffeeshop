@@ -210,10 +210,13 @@
     grid-auto-rows:130px;
     gap:14px;
   }
-  .amb-tile{
-    border-radius:2px; position:relative; overflow:hidden;
-    display:flex; align-items:flex-end; padding:18px;
-  }
+.amb-tile{
+  border-radius:2px; position:relative; overflow:hidden;
+  display:flex; align-items:flex-end; padding:18px;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
   .amb-tile span{
     color:var(--crema); font-family:'Fraunces', serif; font-size:0.95rem; position:relative; z-index:2;
     opacity:0; transform:translateY(6px); transition:all .35s ease;
@@ -436,14 +439,14 @@
       <div class="kicker"><span class="rule"></span>Ambienti</div>
       <h2>Një cep i qetë, edhe kur qyteti është plot zhurmë.</h2>
     </div>
-    <div class="amb-grid">
-      <div class="amb-tile t1" style="background:linear-gradient(155deg,#3a2716,#1B120B);"><span>Tavolina pranë dritares</span></div>
-      <div class="amb-tile t2" style="background:linear-gradient(155deg,#5c3a24,#2c1d10);"><span>Banaku i espresos</span></div>
-      <div class="amb-tile t3" style="background:linear-gradient(155deg,#7a4a2a,#3a2716);"><span>Qoshja e leximit</span></div>
-      <div class="amb-tile t4" style="background:linear-gradient(155deg,#8C2F26,#3a1512);"><span>Tarraca e verës</span></div>
-      <div class="amb-tile t5" style="background:linear-gradient(155deg,#4a3018,#241809);"><span>Raftet e kokrrave</span></div>
-      <div class="amb-tile t6" style="background:linear-gradient(155deg,#2c1d10,#1B120B);"><span>Tavolina e gjatë e përbashkët</span></div>
-    </div>
+   <div class="amb-grid">
+  <div class="amb-tile t1" style="background-image:linear-gradient(155deg, rgba(27,18,11,0.15), rgba(27,18,11,0.15)), url('images/tavolina-dritare.jpg');"><span>Tavolina pranë dritares</span></div>
+  <div class="amb-tile t2" style="background-image:linear-gradient(155deg, rgba(27,18,11,0.15), rgba(27,18,11,0.15)), url('images/banaku-espreso.jpg');"><span>Banaku i espresos</span></div>
+  <div class="amb-tile t3" style="background-image:linear-gradient(155deg, rgba(27,18,11,0.15), rgba(27,18,11,0.15)), url('images/qosheja-leximit.jpg');"><span>Qoshja e leximit</span></div>
+  <div class="amb-tile t4" style="background-image:linear-gradient(155deg, rgba(27,18,11,0.15), rgba(27,18,11,0.15)), url('images/tarraca-vere.jpg');"><span>Tarraca e verës</span></div>
+  <div class="amb-tile t5" style="background-image:linear-gradient(155deg, rgba(27,18,11,0.15), rgba(27,18,11,0.15)), url('images/raftet-kokrrave.jpg');"><span>Raftet e kokrrave</span></div>
+  <div class="amb-tile t6" style="background-image:linear-gradient(155deg, rgba(27,18,11,0.15), rgba(27,18,11,0.15)), url('images/tavolina-gjate.jpg');"><span>Tavolina e gjatë e përbashkët</span></div>
+</div>
   </div>
 </section>
 
