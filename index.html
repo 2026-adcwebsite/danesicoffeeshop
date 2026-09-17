@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Danesi Coffee Shop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --espresso:#1B120B;
+    --espresso-2:#241809;
+    --crema:#F6EFE2;
+    --crema-dim:#EDE3D0;
+    --brass:#C69A46;
+    --brass-soft:#a9884f;
+    --rosso:#8C2F26;
+    --latte:#D8C6A8;
+    --ink:#1B120B;
+    --paper:#F6EFE2;
+    --line: rgba(198,154,70,0.35);
+    --focus: #C69A46;
+  }
+  :root:not([data-theme="light"]){
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#F6EFE2;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#F6EFE2;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--espresso);
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  h1,h2,h3{font-family:'Fraunces', serif; font-weight:450; letter-spacing:-0.01em;}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 32px;
+    background:rgba(27,18,11,0.0);
+    transition:background .4s ease, padding .4s ease, box-shadow .4s ease;
+  }
+  .nav.scrolled{
+    background:rgba(27,18,11,0.92);
+    backdrop-filter:blur(6px);
+    padding:14px 32px;
+    box-shadow:0 1px 0 var(--line);
+  }
+  .nav-mark{
+    display:flex; align-items:center; gap:10px;
+    color:var(--crema); font-family:'Fraunces', serif; font-size:1.25rem;
+  }
+  .nav-mark svg{width:26px; height:26px; flex-shrink:0;}
+  .nav-links{display:flex; gap:34px;}
+  .nav-links a{
+    color:var(--crema); font-size:0.92rem; opacity:0.82;
+    position:relative; padding-bottom:3px;
+  }
+  .nav-links a:hover{opacity:1;}
+  .nav-links a::after{
+    content:""; position:absolute; left:0; bottom:0; width:0; height:1px;
+    background:var(--brass); transition:width .3s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-toggle{display:none; background:none; border:none; color:var(--crema); font-size:1.6rem; cursor:pointer;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:radial-gradient(120% 140% at 78% 8%, #2c1d10 0%, var(--espresso) 55%, var(--espresso) 100%);
+    color:var(--crema);
+    min-height:100vh;
+    display:flex; align-items:center;
+    padding:140px 0 90px;
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:40px;
+    align-items:center;
+  }
+  .hero-eyebrow{
+    color:var(--brass); font-size:0.95rem; margin-bottom:22px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .hero-eyebrow .rule{width:38px; height:1px; background:var(--brass);}
+  .hero h1{
+    font-size:clamp(2.6rem, 5.6vw, 4.6rem);
+    line-height:1.04;
+    max-width:11ch;
+    color:var(--crema);
+  }
+  .hero h1 em{font-style:italic; color:var(--brass); font-weight:450;}
+  .hero p.lede{
+    margin-top:26px; max-width:44ch; color:var(--latte); font-size:1.08rem; font-weight:300;
+  }
+  .hero-cta{
+    margin-top:40px; display:flex; gap:18px; flex-wrap:wrap; align-items:center;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:15px 28px; font-size:0.95rem; border-radius:2px;
+    border:1px solid var(--brass); cursor:pointer; transition:all .25s ease;
+    font-family:'Work Sans', sans-serif;
+  }
+  .btn-solid{background:var(--brass); color:var(--espresso); border-color:var(--brass);}
+  .btn-solid:hover{background:#dcae5c;}
+  .btn-ghost{color:var(--crema); border-color:rgba(246,239,226,0.35);}
+  .btn-ghost:hover{border-color:var(--brass); color:var(--brass);}
+  .hero-open{
+    margin-top:56px; display:flex; gap:30px; color:var(--latte); font-size:0.88rem;
+    border-top:1px solid rgba(246,239,226,0.14); padding-top:22px; max-width:480px;
+  }
+  .hero-open div span{display:block; color:var(--crema); font-family:'Fraunces',serif; font-size:1.05rem; margin-bottom:2px;}
+
+  .hero-art{position:relative; display:flex; justify-content:center; align-items:center;}
+  .hero-art svg{width:100%; max-width:380px; height:auto;}
+
+  /* steam animation - single deliberate motion */
+  .steam path{
+    stroke-dasharray:60;
+    stroke-dashoffset:0;
+    animation:steam 5s ease-in-out infinite;
+    transform-origin:center;
+  }
+  .steam path:nth-child(2){animation-delay:.6s;}
+  .steam path:nth-child(3){animation-delay:1.2s;}
+  @keyframes steam{
+    0%{opacity:0; transform:translateY(6px);}
+    30%{opacity:0.85;}
+    75%{opacity:0.2;}
+    100%{opacity:0; transform:translateY(-14px);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .steam path{animation:none; opacity:0.5;}
+    html{scroll-behavior:auto;}
+  }
+
+  /* ---------- SECTION SCAFFOLD ---------- */
+  section{padding:110px 0;}
+  .section-head{
+    display:grid; grid-template-columns:0.9fr 1.1fr; gap:40px; margin-bottom:64px; align-items:end;
+  }
+  .kicker{color:var(--brass-soft); font-size:0.95rem; display:flex; align-items:center; gap:12px;}
+  .kicker .rule{width:38px; height:1px; background:var(--brass-soft);}
+  .section-head h2{font-size:clamp(2rem, 3.4vw, 2.9rem); line-height:1.1;}
+  .section-head p{color:#5b4a38; font-size:1.02rem; max-width:46ch; font-weight:300;}
+
+  /* ---------- STORY ---------- */
+  .story{background:var(--paper);}
+  .story-grid{display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center;}
+  .story-copy p{margin-bottom:18px; color:#3c2e20; font-weight:300; font-size:1.04rem; max-width:48ch;}
+  .story-copy p:first-of-type::first-letter{
+    font-family:'Fraunces', serif; font-size:3.4rem; float:left; line-height:0.8;
+    padding:8px 10px 0 0; color:var(--rosso); font-weight:450;
+  }
+  .story-stats{display:flex; gap:0; margin-top:36px; border-top:1px solid var(--line);}
+  .story-stats div{padding:20px 26px 0 0; margin-right:26px; border-right:1px solid var(--line);}
+  .story-stats div:last-child{border-right:none;}
+  .story-stats strong{display:block; font-family:'Fraunces', serif; font-size:1.9rem; color:var(--rosso); font-weight:450;}
+  .story-stats span{font-size:0.85rem; color:#6b5c48;}
+
+  .story-visual{position:relative; aspect-ratio:4/5; border-radius:2px; overflow:hidden;}
+
+  /* ---------- MENU ---------- */
+  .menu{background:var(--espresso); color:var(--crema);}
+  .menu .kicker{color:var(--brass);}
+  .menu .section-head p{color:var(--latte);}
+  .menu-tabs{display:flex; gap:10px; margin-bottom:50px; flex-wrap:wrap;}
+  .menu-tab{
+    padding:10px 20px; border:1px solid rgba(246,239,226,0.25); border-radius:2px;
+    font-size:0.9rem; color:var(--latte); cursor:pointer; background:transparent; font-family:'Work Sans',sans-serif;
+    transition:all .25s ease;
+  }
+  .menu-tab.active, .menu-tab:hover{border-color:var(--brass); color:var(--brass);}
+  .menu-panel{display:none;}
+  .menu-panel.active{display:block;}
+  .menu-list{display:grid; grid-template-columns:1fr 1fr; gap:0 60px;}
+  .menu-item{
+    display:flex; justify-content:space-between; gap:20px;
+    padding:20px 0; border-bottom:1px solid rgba(246,239,226,0.12);
+  }
+  .menu-item .mi-name{font-family:'Fraunces', serif; font-size:1.12rem; color:var(--crema); font-weight:450;}
+  .menu-item .mi-desc{font-size:0.86rem; color:var(--latte); margin-top:4px; max-width:34ch; font-weight:300;}
+  .menu-item .mi-price{
+    font-family:'Fraunces', serif; color:var(--brass); font-size:1.05rem; white-space:nowrap; padding-top:2px;
+  }
+
+  /* ---------- AMBIENCE / GALLERY ---------- */
+  .ambience{background:var(--paper);}
+  .amb-grid{
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    grid-auto-rows:130px;
+    gap:14px;
+  }
+  .amb-tile{
+    border-radius:2px; position:relative; overflow:hidden;
+    display:flex; align-items:flex-end; padding:18px;
+  }
+  .amb-tile span{
+    color:var(--crema); font-family:'Fraunces', serif; font-size:0.95rem; position:relative; z-index:2;
+    opacity:0; transform:translateY(6px); transition:all .35s ease;
+  }
+  .amb-tile:hover span{opacity:1; transform:translateY(0);}
+  .amb-tile::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(27,18,11,0) 40%, rgba(27,18,11,0.75) 100%); opacity:0; transition:opacity .35s ease;}
+  .amb-tile:hover::after{opacity:1;}
+  .t1{grid-column:span 3; grid-row:span 2;}
+  .t2{grid-column:span 3; grid-row:span 1;}
+  .t3{grid-column:span 2; grid-row:span 1;}
+  .t4{grid-column:span 2; grid-row:span 2;}
+  .t5{grid-column:span 2; grid-row:span 1;}
+  .t6{grid-column:span 4; grid-row:span 1;}
+
+  /* ---------- HOURS / LOCATION ---------- */
+  .visit{background:var(--espresso-2); color:var(--crema);}
+  .visit .kicker{color:var(--brass);}
+  .visit .section-head p{color:var(--latte);}
+  .visit-grid{display:grid; grid-template-columns:1fr 1fr; gap:70px;}
+  .hours-table{width:100%; border-collapse:collapse;}
+  .hours-table tr{border-bottom:1px solid rgba(246,239,226,0.14);}
+  .hours-table td{padding:16px 0; font-size:0.98rem;}
+  .hours-table td:first-child{color:var(--latte); font-weight:400;}
+  .hours-table td:last-child{text-align:right; font-family:'Fraunces', serif; color:var(--crema);}
+  .hours-table tr.today td{color:var(--brass);}
+  .hours-table tr.today td:first-child{color:var(--brass);}
+
+  .visit-map{border:1px solid rgba(246,239,226,0.16); border-radius:2px; padding:34px; display:flex; flex-direction:column; gap:22px;}
+  .addr-line{display:flex; gap:16px; align-items:flex-start;}
+  .addr-line svg{flex-shrink:0; margin-top:3px;}
+  .addr-line strong{display:block; font-family:'Fraunces', serif; font-weight:450; margin-bottom:3px;}
+  .addr-line span{color:var(--latte); font-size:0.92rem; font-weight:300;}
+  .map-frame{border-radius:2px; overflow:hidden; border:1px solid rgba(246,239,226,0.14);}
+
+  /* ---------- TESTIMONIAL STRIP ---------- */
+  .quote{background:var(--paper); padding:100px 0; text-align:center;}
+  .quote blockquote{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:450;
+    font-size:clamp(1.5rem, 3vw, 2.1rem); max-width:18ch; margin:0 auto; line-height:1.3; color:var(--espresso);
+  }
+  .quote cite{display:block; margin-top:26px; font-style:normal; color:#6b5c48; font-size:0.9rem;}
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer{background:var(--espresso); color:var(--latte); padding:80px 0 30px;}
+  .footer-grid{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:50px; padding-bottom:60px; border-bottom:1px solid rgba(246,239,226,0.12);}
+  .footer-brand{display:flex; align-items:center; gap:10px; color:var(--crema); font-family:'Fraunces', serif; font-size:1.3rem; margin-bottom:16px;}
+  .footer-brand svg{width:24px; height:24px;}
+  .footer-col h4{color:var(--crema); font-family:'Fraunces', serif; font-weight:450; margin-bottom:18px; font-size:1rem;}
+  .footer-col a, .footer-col p{display:block; font-size:0.92rem; margin-bottom:10px; color:var(--latte);}
+  .footer-col a:hover{color:var(--brass);}
+  .foot-bottom{display:flex; justify-content:space-between; padding-top:26px; font-size:0.82rem; color:#8a7a63; flex-wrap:wrap; gap:10px;}
+  .social{display:flex; gap:16px;}
+  .social a{color:var(--latte);}
+  .social a:hover{color:var(--brass);}
+
+  a:focus-visible, button:focus-visible{outline:2px solid var(--focus); outline-offset:3px;}
+
+  @media (max-width: 900px){
+    .nav-links{
+      position:fixed; top:0; right:0; height:100vh; width:min(78vw,320px);
+      background:var(--espresso); flex-direction:column; padding:100px 36px 40px;
+      transform:translateX(100%); transition:transform .35s ease; gap:26px;
+    }
+    .nav-links.open{transform:translateX(0);}
+    .nav-toggle{display:block;}
+    .hero .wrap{grid-template-columns:1fr;}
+    .hero-art{order:-1; margin-bottom:10px;}
+    .hero-art svg{max-width:220px;}
+    .hero h1{max-width:none;}
+    .section-head{grid-template-columns:1fr;}
+    .story-grid{grid-template-columns:1fr; gap:40px;}
+    .story-visual{order:-1;}
+    .menu-list{grid-template-columns:1fr;}
+    .visit-grid{grid-template-columns:1fr; gap:44px;}
+    .amb-grid{grid-template-columns:repeat(2,1fr); grid-auto-rows:150px;}
+    .t1,.t2,.t3,.t4,.t5,.t6{grid-column:span 2; grid-row:span 1;}
+    .footer-grid{grid-template-columns:1fr; gap:36px;}
+    section{padding:80px 0;}
+    .wrap{padding:0 22px;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="#top" class="nav-mark">
+    <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="1"/><path d="M13 17h13v6a6.5 6.5 0 0 1-6.5 6.5h0A6.5 6.5 0 0 1 13 23v-6z" stroke="currentColor" stroke-width="1.3"/><path d="M26 19h1.5a2.5 2.5 0 0 1 0 5H26" stroke="currentColor" stroke-width="1.3"/><path d="M16 13c0-1 1-1 1-2s-1-1-1-2M20 13c0-1 1-1 1-2s-1-1-1-2" stroke="currentColor" stroke-width="1"/></svg>
+    Danesi
+  </a>
+  <button class="nav-toggle" id="navToggle" aria-label="Hap menynë">☰</button>
+  <div class="nav-links" id="navLinks">
+    <a href="#historia">Historia</a>
+    <a href="#menu">Menu</a>
+    <a href="#ambienti">Ambienti</a>
+    <a href="#vizita">Orari &amp; Vendndodhja</a>
+    <a href="#kontakt">Kontakt</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="hero-eyebrow"><span class="rule"></span>Bar-kafe në zemër të qytetit</div>
+      <h1>Kafeja që fillon <em>çdo bisedë</em> të mirë.</h1>
+      <p class="lede">Danesi Coffee Shop është vendi ku era e kafesë së sapopjekur takohet me qetësinë e mëngjesit. Çaj, espreso dhe pjekje shtëpie — çdo ditë, të freskëta.</p>
+      <div class="hero-cta">
+        <a href="#vizita" class="btn btn-solid">Na gjej</a>
+        <a href="#menu" class="btn btn-ghost">Shiko menunë</a>
+      </div>
+      <div class="hero-open">
+        <div><span>07:30 – 22:00</span>Hapur çdo ditë</div>
+        <div><span>Rr. Myslym Shyri</span>Tiranë, Shqipëri</div>
+        <div><span>+355 69 000 0000</span>Rezervime &amp; porosi</div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 300 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g class="steam" stroke="#C69A46" stroke-width="2.4" stroke-linecap="round">
+          <path d="M110 60 C 100 45, 122 35, 112 20"/>
+          <path d="M150 60 C 140 45, 162 35, 152 20"/>
+          <path d="M190 60 C 180 45, 202 35, 192 20"/>
+        </g>
+        <ellipse cx="150" cy="290" rx="95" ry="12" fill="#C69A46" opacity="0.15"/>
+        <path d="M70 110 H230 L216 240 a20 20 0 0 1-20 18H110 a20 20 0 0 1-20-18 L70 110 Z" fill="#241809" stroke="#C69A46" stroke-width="2"/>
+        <path d="M230 130 h18 a22 22 0 0 1 0 44 h-14" stroke="#C69A46" stroke-width="2" fill="none"/>
+        <path d="M70 110 H230" stroke="#C69A46" stroke-width="2"/>
+        <path d="M92 130 c10 30 -6 44 4 70 c10 24 90 24 100 0 c10-26-6-40 4-70" stroke="#8C2F26" stroke-width="1.4" opacity="0.55" fill="none"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section class="story" id="historia">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker"><span class="rule"></span>Historia jonë</div>
+      <h2>Nisi si një recetë familjare, u bë vend takimi për mëngjese të gjata.</h2>
+    </div>
+    <div class="story-grid">
+      <div class="story-copy">
+        <p>Emri Danesi vjen nga një traditë familjare pjekjeje kafeje që kalon tre brezash. Ajo që dikur ishte një makinë e vogël pjekjeje në garazh, sot është një sirtar aromash që mbush çdo cep të lokalit tonë çdo mëngjes.</p>
+        <p>Blejmë kokrra të gjelbra direkt nga fermerë të vegjël në Amerikën Jugore dhe Afrikën Lindore, dhe i pjekim vetë, në sasi të vogla, disa herë në javë — jo më shumë se sa mund të shesim brenda dhjetë ditësh.</p>
+        <p>Rezultati është një filxhan që ndryshon pak nga stina në stinë, sepse kafeja e vërtetë duhet, e nuk duhet të jetë gjithmonë njësoj.</p>
+        <div class="story-stats">
+          <div><strong>2013</strong><span>Viti i hapjes</span></div>
+          <div><strong>7</strong><span>Origjina kafeje</span></div>
+          <div><strong>4.9</strong><span>Vlerësim mesatar</span></div>
+        </div>
+      </div>
+      <div class="story-visual">
+        <svg viewBox="0 0 500 620" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="storyGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#2c1d10"/>
+              <stop offset="100%" stop-color="#1B120B"/>
+            </linearGradient>
+          </defs>
+          <rect width="500" height="620" fill="url(#storyGrad)"/>
+          <g opacity="0.9">
+            <circle cx="120" cy="150" r="10" fill="#C69A46" opacity="0.5"/>
+            <circle cx="150" cy="180" r="6" fill="#8C2F26" opacity="0.6"/>
+            <circle cx="90" cy="200" r="7" fill="#C69A46" opacity="0.4"/>
+          </g>
+          <path d="M150 350 q100 -70 200 0 q30 60 -20 110 q-90 60 -170 0 q-40 -50 -10 -110 Z" fill="none" stroke="#C69A46" stroke-width="1.4" opacity="0.55"/>
+          <text x="250" y="470" text-anchor="middle" font-family="Fraunces, serif" font-size="26" fill="#F6EFE2" opacity="0.85">Piqet çdo të martë</text>
+          <text x="250" y="500" text-anchor="middle" font-family="Work Sans, sans-serif" font-size="13" fill="#D8C6A8">dhe të shtunë, në sasi të vogla</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="menu" id="menu">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker"><span class="rule"></span>Menu</div>
+      <h2>Nga espreso klasik te pjekjet e ditës.</h2>
+    </div>
+
+    <div class="menu-tabs" role="tablist">
+      <button class="menu-tab active" data-tab="kafe">Kafe</button>
+      <button class="menu-tab" data-tab="ftohta">Pije të ftohta</button>
+      <button class="menu-tab" data-tab="embel">Ëmbëlsira &amp; furrë</button>
+    </div>
+
+    <div class="menu-panel active" data-panel="kafe">
+      <div class="menu-list">
+        <div class="menu-item"><div><div class="mi-name">Espreso</div><div class="mi-desc">E vetme ose dyshe, thekje mesatare-e errët</div></div><div class="mi-price">150 L</div></div>
+        <div class="menu-item"><div><div class="mi-name">Macchiato</div><div class="mi-desc">Espreso me një re shkumë qumështi</div></div><div class="mi-price">170 L</div></div>
+        <div class="menu-item"><div><div class="mi-name">Kapuçino Danesi</div><div class="mi-desc">Shkumë kadife, pluhur kanelle opsional</div></div><div class="mi-price">220 L</div></div>
+        <div class="menu-item"><div><div class="mi-name">Latte</div><div class="mi-desc">E butë, mund të shtohet shurup arre</div></div><div class="mi-price">230 L</div></div>
+        <div class="menu-item"><div><div class="mi-name">Flat White</div><div class="mi-desc">Dy shots, qumësht mikro-shkumëzuar</div></div><div class="mi-price">240 L</div></div>
+        <div class="menu-item"><div><div class="mi-name">Filter e ditës</div><div class="mi-desc">Origjinë e ndryshuar çdo javë</div></div><div class="mi-price">200 L</div></div>
+      </div>
+    </div>
+
+    <div class="menu-panel" data-panel="ftohta">
+      <div class="menu-list">
+        <div class="menu-item"><div><div class="mi-name">Cold Brew</div><div class="mi-desc">Infuzion 18 orësh, shërbyer me akull</div></div><div class="mi-price">250 L</div></div>
+        <div class="menu-item"><div><div class="mi-name">Iced Latte</div><div class="mi-desc">Espreso, qumësht i ftohtë, akull</div></div><div class="mi-price">250 L</div></div>
+        <div class="menu-item"><div><div class="mi-name">Freskuese limoni &amp; sherebele</div><div class="mi-desc">Pa kafeinë, natyrale</div></div><div class="mi-price">220 L</div></div>
+        <div class="menu-item"><div><div class="mi-name">Matcha akull</div><div class="mi-desc">Matcha ceremoniale, qumësht tërmuti</div></div><div class="mi-price">280 L</div></div>
+      </div>
+    </div>
+
+    <div class="menu-panel" data-panel="embel">
+      <div class="menu-list">
+        <div class="menu-item"><div><div class="mi-name">Kroasant gjalpi</div><div class="mi-desc">Pjekur çdo mëngjes në orën 6</div></div><div class="mi-price">180 L</div></div>
+        <div class="menu-item"><div><div class="mi-name">Torte çokollate e errët</div><div class="mi-desc">70% kakao, pa krem të tepërt</div></div><div class="mi-price">300 L</div></div>
+        <div class="menu-item"><div><div class="mi-name">Tiramisu Danesi</div><div class="mi-desc">Receta origjinale familjare</div></div><div class="mi-price">320 L</div></div>
+        <div class="menu-item"><div><div class="mi-name">Bukë banane &amp; arra</div><div class="mi-desc">E lagësht, pjekur pa niseshte</div></div><div class="mi-price">200 L</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ambience" id="ambienti">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker"><span class="rule"></span>Ambienti</div>
+      <h2>Një cep i qetë, edhe kur qyteti është plot zhurmë.</h2>
+    </div>
+    <div class="amb-grid">
+      <div class="amb-tile t1" style="background:linear-gradient(155deg,#3a2716,#1B120B);"><span>Tavolina pranë dritares</span></div>
+      <div class="amb-tile t2" style="background:linear-gradient(155deg,#5c3a24,#2c1d10);"><span>Banaku i espresos</span></div>
+      <div class="amb-tile t3" style="background:linear-gradient(155deg,#7a4a2a,#3a2716);"><span>Qoshja e leximit</span></div>
+      <div class="amb-tile t4" style="background:linear-gradient(155deg,#8C2F26,#3a1512);"><span>Tarraca e verës</span></div>
+      <div class="amb-tile t5" style="background:linear-gradient(155deg,#4a3018,#241809);"><span>Raftet e kokrrave</span></div>
+      <div class="amb-tile t6" style="background:linear-gradient(155deg,#2c1d10,#1B120B);"><span>Tavolina e gjatë e përbashkët</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="quote">
+  <div class="wrap">
+    <blockquote>"Kafeja më e mirë e lagjes — dhe vendi ku shkoj kur dua të mendoj qartë."</blockquote>
+    <cite>— Klient i rregullt, Tiranë</cite>
+  </div>
+</section>
+
+<section class="visit" id="vizita">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker"><span class="rule"></span>Orari &amp; Vendndodhja</div>
+      <h2>Të lehtë për t'u gjetur, të vështirë për t'u lënë.</h2>
+    </div>
+    <div class="visit-grid">
+      <table class="hours-table">
+        <tr><td>E hënë – E premte</td><td>07:30 – 22:00</td></tr>
+        <tr><td>E shtunë</td><td>08:00 – 23:00</td></tr>
+        <tr class="today"><td>E diel</td><td>08:30 – 21:00</td></tr>
+      </table>
+      <div class="visit-map">
+        <div class="addr-line">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C69A46" stroke-width="1.4"><path d="M12 21s-7-7.2-7-12a7 7 0 0 1 14 0c0 4.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.4"/></svg>
+          <div><strong>Adresa</strong><span>Rr. Myslym Shyri, pranë sheshit qendror, Tiranë</span></div>
+        </div>
+        <div class="addr-line">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C69A46" stroke-width="1.4"><path d="M4 5h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 14l5 2v4a2 2 0 0 1-2 2A15 15 0 0 1 4 7a2 2 0 0 1 2-2z"/></svg>
+          <div><strong>Telefon</strong><span>+355 69 000 0000</span></div>
+        </div>
+        <div class="addr-line">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C69A46" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 6l9 7 9-7"/></svg>
+          <div><strong>Email</strong><span>hello@danesicoffee.al</span></div>
+        </div>
+        <div class="addr-line">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C69A46" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <div><strong>Parking</strong><span>Falas për klientët, 2 orë</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="kontakt">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="1"/><path d="M13 17h13v6a6.5 6.5 0 0 1-6.5 6.5h0A6.5 6.5 0 0 1 13 23v-6z" stroke="currentColor" stroke-width="1.3"/></svg>
+          Danesi
+        </div>
+        <p style="max-width:32ch; font-weight:300;">Bar-kafe në Tiranë. Kafe e pjekur në lokal, pjekje shtëpie dhe një vend i qetë për mëngjesin tënd.</p>
+        <div class="social" style="margin-top:20px;">
+          <a href="#" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          </a>
+          <a href="#" aria-label="Facebook">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M15 8h-2a2 2 0 0 0-2 2v10M9 13h6"/><circle cx="12" cy="12" r="9"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Eksploro</h4>
+        <a href="#historia">Historia</a>
+        <a href="#menu">Menu</a>
+        <a href="#ambienti">Ambienti</a>
+        <a href="#vizita">Orari &amp; Vendndodhja</a>
+      </div>
+      <div class="footer-col">
+        <h4>Kontakt</h4>
+        <p>Rr. Myslym Shyri, Tiranë</p>
+        <p>+355 69 000 0000</p>
+        <p>hello@danesicoffee.al</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Danesi Coffee Shop. Të gjitha të drejtat e rezervuara.</span>
+      <span>Bërë me kujdes, filxhan pas filxhani.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // nav scroll state
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // mobile nav
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // menu tabs
+  const tabs = document.querySelectorAll('.menu-tab');
+  const panels = document.querySelectorAll('.menu-panel');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelector(`.menu-panel[data-panel="${tab.dataset.tab}"]`).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
